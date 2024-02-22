@@ -1,0 +1,4 @@
+name = "developmentecon_replication"
+uuid = "9d58cfbd-e991-4dec-8a30-0a17f8c712eb"
+authors = ["Peter Tkatchenko <peteratkatchenko@gmail.com>"]
+version = "0.1.0"
