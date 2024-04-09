@@ -1,3 +1,5 @@
 #Files to be ignored for Dev Econ Replication 
 
 *.dta 
+*.txt 
+*.zip 
