@@ -2,9 +2,8 @@ module NsysTFPPA_
 
   export NsysTFPPA
 
-  function NsysTFPPA(X::Vector, dictmain::Dict)
+  function NsysTFPPA(X::Vector, i::Int, dictmain::Dict)
 
-    i = dictmain[:i]
     shocks = dictmain[:shocks]
     kappa = dictmain[:kappa]
     psi = dictmain[:psi]
