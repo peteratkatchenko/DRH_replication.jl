@@ -1,5 +1,6 @@
 using StatFiles
 using DataFrames 
+using Econometrics 
 
 #PARAMETER VALUES 
 
@@ -20,36 +21,46 @@ rename!(data,
 "gdp2005" => "gdp",
 "cons2005" => "cons")
 
-
 #CALCULATE SOME OF THE VARIABLES NEEDED
 
 #Labor wedge expressed as (1-tau)
-transform(data, (censemp .*censhours .*52) ./(censpop15 ./totalhours))
 
-gen hours
-gen laborwedge=$psi/(1-$theta)*cons/gdp*hours/(1-hours)
+function hours_fun(x::Vector, y::Vector, z::Vector)
+(x .*y .*52) ./(z ./ totalhours)
+end 
+
+transform(data, [:censemp, :censhours, :censpop15] => hours_fun => :hours)
+
+
+transform(data, psi/(1-theta)*cons/gdp*hours/(1-hours) => laborwedge)
+
 
 
 #Efficiency wedge
-gen efficiencywedge=(gdp/pop)^(1-$theta)/($theta/$inter)^$theta/ (hours^(1-$theta))
+transform(data, (gdp/pop)^(1-$theta)/($theta/$inter)^$theta/ (hours^(1-$theta)) => efficiencywedge)
 
 
-* CREATE LOG VARIABLES 
-gen logpop=log(pop)
-gen loglaborwedge=log(1-laborwedge)
-gen logeff=log(efficiencywedge)
-gen logpop2=log(exp(logpop)*10000)
 
-* USE EQUATION (20) TO COMPUTE LOG OF EXCESSIVE FRICTIONS AND ALPHA_5 AND THEN DETERMINE KAPPA
+#CREATE LOG VARIABLES
+transform(data, :pop => log => :logpop)
+transform(data, (1 .- laborwedge) => log => loglaborwedge)
+transform(data, efficiencywedge => log => logeff)
+transform(data, exp(:logpop)*10000 => log => logpop2)
+
+
+#USE EQUATION (20) TO COMPUTE LOG OF EXCESSIVE FRICTIONS AND ALPHA_5 AND THEN DETERMINE KAPPA
+
 gen loglaborpop=loglaborwedge-0.5*log(exp(logpop)*10000)
+
 reg loglaborpop 
 scalar alpha5=_b[_cons]
 scalar kappa=exp(coeffg-ln(2/3)+0.5*ln(3.1415))
 display kappa
 gen logexcfrict=log(exp(loglaborwedge)/kappa*3/2*(3.1415/(pop*10000))^0.5)
 
-* KEEP VARIABLES NEEDED TO RUN COUNTERFACTUAL EXERCISE
-* population in 1,000 to make comparable to U.S. 
+#KEEP VARIABLES NEEDED TO RUN COUNTERFACTUAL EXERCISE
+#population in 1,000 to make comparable to U.S. 
+
 replace pop=pop*10
 drop if loglaborwedge==.
 drop if logpop==.
