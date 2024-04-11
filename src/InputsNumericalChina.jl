@@ -1,6 +1,7 @@
 using StatFiles
 using DataFrames 
 using Econometrics 
+using CSV 
 
 #PARAMETER VALUES 
 
@@ -16,6 +17,7 @@ data = DataFrame(load("C:\\Users\\peter\\.julia\\dev\\dev_econ_replication\\repl
 rename!(data, 
 "censpop152005" => "censpop15",
 "censemp2005" => "censemp",
+"censhours2005" => "censhours",
 "emp2005" => "emp",
 "pop2005" => "pop",
 "gdp2005" => "gdp",
@@ -25,52 +27,65 @@ rename!(data,
 
 #Labor wedge expressed as (1-tau)
 
-function hours_fun(x::Vector, y::Vector, z::Vector)
-(x .*y .*52) ./(z ./ totalhours)
+function hours_fun(censemp::Vector, censhours::Vector, censpop15::Vector)
+(censemp .*censhours .*52) ./(censpop15 ./ totalhours)
 end 
+ 
+data = transform(data, [:censemp, :censhours, :censpop15] => hours_fun => :hours) 
 
-transform(data, [:censemp, :censhours, :censpop15] => hours_fun => :hours)
+function laborwedge_fun(cons::Vector, gdp::Vector, hours::Vector)
+(psi/(1-theta) .* cons) ./(gdp .* hours)./(1 .- hours)
+end
 
-
-transform(data, psi/(1-theta)*cons/gdp*hours/(1-hours) => laborwedge)
-
-
+data = transform(data, [:cons, :gdp, :hours] => laborwedge_fun => :laborwedge)
+    
 
 #Efficiency wedge
-transform(data, (gdp/pop)^(1-$theta)/($theta/$inter)^$theta/ (hours^(1-$theta)) => efficiencywedge)
 
+function effwedge_fun(gdp::Vector, pop::Vector, hours::Vector)
+(gdp ./pop) .^(1-theta) ./(theta/inter)^theta ./ (hours .^(1-theta))
+end 
 
+data = transform(data,  [:gdp, :pop, :hours] => effwedge_fun => :efficiencywedge)
+  
+ 
 
 #CREATE LOG VARIABLES
-transform(data, :pop => log => :logpop)
-transform(data, (1 .- laborwedge) => log => loglaborwedge)
-transform(data, efficiencywedge => log => logeff)
-transform(data, exp(:logpop)*10000 => log => logpop2)
+
+data.logpop = log.(data[!, :pop]) 
+
+data.loglaborwedge = log.(1 .- data[!, :laborwedge])
+ 
+data.logeff = log.(data[!, :efficiencywedge]) 
+
+data.logpop2 = log.(exp.(data[!, :logpop]).*10000) 
 
 
 #USE EQUATION (20) TO COMPUTE LOG OF EXCESSIVE FRICTIONS AND ALPHA_5 AND THEN DETERMINE KAPPA
 
-gen loglaborpop=loglaborwedge-0.5*log(exp(logpop)*10000)
+data.loglaborpop = data[!, :loglaborwedge] .- 0.5 .* log.(exp.(data[!, :logpop]) .*10000)
+ 
+model = fit(EconometricModel, @formula(loglaborpop ~ PLACEHOLDER), data)
 
-reg loglaborpop 
-scalar alpha5=_b[_cons]
-scalar kappa=exp(coeffg-ln(2/3)+0.5*ln(3.1415))
-display kappa
-gen logexcfrict=log(exp(loglaborwedge)/kappa*3/2*(3.1415/(pop*10000))^0.5)
+alpha5 = coef(model)[1] 
+
+kappa = exp(coeffg - ln(2/3)+0.5*ln(3.1415))
+
+println(kappa)
+
+data.logexcfrict = log.(exp.(data[!, :loglaborwedge]) ./ kappa .* (3/2) .* (3.1415 ./ (data[!, :pop] .* 10000)).^0.5)
 
 #KEEP VARIABLES NEEDED TO RUN COUNTERFACTUAL EXERCISE
 #population in 1,000 to make comparable to U.S. 
 
-replace pop=pop*10
-drop if loglaborwedge==.
-drop if logpop==.
-drop if cityid==.
-gen year=2005
-keep province city year logeff logexcfrict pop
+data.pop = data[!, :pop] .* 10
 
+filter!(row -> ismissing(row.loglaborwedge) ,data)
 
+filter!(row -> ismissing(row.logpop), data)
 
+filter!(row -> ismissing(row.cityid), data)
 
+data.year = fill(2005, nrow(data))
 
-
-
+data = select(data, [:province, :city, :year, :logeff, :logexcfrict, :pop])
