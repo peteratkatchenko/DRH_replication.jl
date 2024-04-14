@@ -115,7 +115,7 @@ model = fit(EconometricModel, @formula(loglaborpop ~ dummy2005 + dummy2006 + dum
 
 alpha5 = coef(model)[1]
 
-alpha5dummy2005 = alpha5 + coef(model)[2]
+alpha5dum2005 = alpha5 + coef(model)[2]
 
 alpha5dum2006 = alpha5 + coef(model)[3]
 
@@ -131,17 +131,31 @@ kappa2007 = exp(alpha5dum2007 - log(2/3) + (1/2)*log(3.1415))
 
 println(kappa)
 
-kappa2 = round(kappa, 0.00001)
+kappa2 = round(kappa, digits=5)
 
-logexcfrict = log.( exp.(data[!, :loglaborwedge]) ./ kappa2 * (3/2) * (3.1415/(data[!, :pop] .*1000)) .^0.5)
+data.logexcfrict = log.( exp.(data[!, :loglaborwedge]) ./ kappa2 .* (3/2) .* (3.1415 ./(data[!, :pop] .* 1000)) .^0.5)
 
 
 #KEEP VARIABLES NEEDED TO RUN COUNTERFACTUAL EXERCISE
-keep year fips msaname statename logeff logexcfrict pop
 
-reshape wide logeff logexcfrict pop, i(fips) j(year)
+data = select(data, [:year, :fips, :msaname, :statename, :logeff, :logexcfrict, :pop])
 
-drop if pop2005==.
-drop if pop2006==.
-drop if pop2007==.
-drop if pop2008==.
+#RESHAPE DATA FROM LONG TO WIDE
+
+data1 = select(data, [:year, :fips, :msaname, :statename, :logeff])
+data1 = unstack(data1, [:fips, :msaname, :statename], :year, :logeff)
+rename!(data1, "2005" => "logeff_2005", "2006" => "logeff_2006", "2007" => "logeff_2007", "2008" => "logeff_2008")
+
+data2 = select(data, [:year, :fips, :msaname, :statename, :logexcfrict])
+data2 = unstack(data2, [:fips, :msaname, :statename], :year, :logexcfrict)
+rename!(data2, "2005" => "logexcfrict_2005", "2006" => "logexcfrict_2006", "2007" => "logexcfrict_2007", "2008" => "logexcfrict_2008")
+
+data3 = select(data, [:year, :fips, :msaname, :statename, :pop])
+data3 = unstack(data3, [:fips, :msaname, :statename], :year, :pop)
+rename!(data3, "2005" => "pop_2005", "2006" => "pop_2006", "2007" => "pop_2007", "2008" => "pop_2008")
+
+data = hcat(data1, data2, data3, makeunique=true)
+
+data = select(data, :fips, :msaname, :statename, Cols(r"logeff_.*"), Cols(r"logexcfrict_.*"), Cols(r"pop.*"))
+
+dropmissing!(data, Cols(r"pop.*"))
