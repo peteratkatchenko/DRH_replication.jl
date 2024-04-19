@@ -1,5 +1,5 @@
 # Fdb version 4
-["pdflatex"] 1713450684.54889 "c:/Users/peter/.julia/dev/dev_econ_replication/latex_files/referee_report.tex" "referee_report.pdf" "referee_report" 1713450685.07258 0
+["pdflatex"] 1713559718.73627 "c:/Users/peter/.julia/dev/dev_econ_replication/latex_files/referee_report.tex" "referee_report.pdf" "referee_report" 1713559719.43994 0
   "C:/Users/peter/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map" 1713431931 80909 eab91d9745dd2edfd62a31d53cd5fe15 ""
   "C:/Users/peter/AppData/Local/MiKTeX/miktex/data/le/pdftex/pdflatex.fmt" 1713215031 24236047 acf064c332ab3f4120d98f106866075e ""
   "C:/Users/peter/AppData/Local/Programs/MiKTeX/fonts/tfm/public/amsfonts/cmextra/cmex7.tfm" 1233951848 1004 54797486969f23fa377b128694d548df ""
@@ -15,6 +15,7 @@
   "C:/Users/peter/AppData/Local/Programs/MiKTeX/fonts/tfm/public/cm/cmsy10.tfm" 1136765053 1124 6c73e740cf17375f03eec0ee63599741 ""
   "C:/Users/peter/AppData/Local/Programs/MiKTeX/fonts/tfm/public/cm/cmsy6.tfm" 1136765053 1116 933a60c408fc0a863a92debe84b2d294 ""
   "C:/Users/peter/AppData/Local/Programs/MiKTeX/fonts/tfm/public/cm/cmsy8.tfm" 1136765053 1120 8b7d695260f3cff42e636090a8002094 ""
+  "C:/Users/peter/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi10.pfb" 1247596667 36299 5f9df58c2139e7edcf37c8fca4bd384d ""
   "C:/Users/peter/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr10.pfb" 1247596667 35752 024fb6c41858982481f6968b5fc26508 ""
   "C:/Users/peter/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr12.pfb" 1247596667 32722 d7379af29a190c3f453aba36302ff5a9 ""
   "C:/Users/peter/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr17.pfb" 1247596666 32362 bc3f3eec7ab7d65fe700963d4017d32c ""
@@ -26,9 +27,9 @@
   "C:/Users/peter/AppData/Local/Programs/MiKTeX/tex/latex/base/article.cls" 1705273579 20144 147463a6a579f4597269ef9565205cfe ""
   "C:/Users/peter/AppData/Local/Programs/MiKTeX/tex/latex/base/size10.clo" 1705273578 8448 dbc0dbf4156c0bb9ba01a1c685d3bad0 ""
   "C:/Users/peter/AppData/Local/Programs/MiKTeX/tex/latex/l3backend/l3backend-pdftex.def" 1710412547 29918 d08e4795c0778dfb000e82d9225c6ce2 ""
-  "c:/Users/peter/.julia/dev/dev_econ_replication/latex_files/referee_report.tex" 1713450683 3284 8d132911e8d26a2e2faf6ae2622a7721 ""
-  "referee_report.aux" 1713450684 32 044b7f8fc9779af7531264e0c5c84b6d "pdflatex"
-  "referee_report.tex" 1713450683 3284 8d132911e8d26a2e2faf6ae2622a7721 ""
+  "c:/Users/peter/.julia/dev/dev_econ_replication/latex_files/referee_report.tex" 1713559717 10062 23423eed183cbf4f7757d7e6b3a22c71 ""
+  "referee_report.aux" 1713559719 32 c81c40425fbb5e93b90fba65da0b5e61 "pdflatex"
+  "referee_report.tex" 1713559717 10062 23423eed183cbf4f7757d7e6b3a22c71 ""
   (generated)
   "referee_report.aux"
   "referee_report.log"
