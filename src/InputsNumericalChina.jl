@@ -1,7 +1,7 @@
 using StatFiles
 using DataFrames 
 using Econometrics 
-using CSV 
+using JLD2
 
 #PARAMETER VALUES 
 
@@ -11,8 +11,10 @@ totalhours=5110
 inter=0.2008
 
 #DATASET USED
+filepath1 = joinpath(@__DIR__, "DataChina.jld2")
 
-data = DataFrame(load("C:\\Users\\peter\\.julia\\dev\\dev_econ_replication\\replication_files\\urban_accounting_welfare_replication\\ReplicationFiles\\AERDataFiles\\DataChina.dta")) 
+data = DataFrame(load(filepath1)) 
+
 
 rename!(data, 
 "censpop152005" => "censpop15",

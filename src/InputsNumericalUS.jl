@@ -2,6 +2,8 @@ using StatFiles
 using DataFrames 
 using Econometrics 
 using CSV 
+using JLD2
+using Statistics
 
 
 #PARAMETER VALUES FROM MCGRATTAN
@@ -12,7 +14,10 @@ delta=0.02
 inter=0.02
 
 #DATASET USED
-data =  DataFrame(load("C:\\Users\\peter\\.julia\\dev\\dev_econ_replication\\replication_files\\urban_accounting_welfare_replication\\ReplicationFiles\\AERDataFiles\\DataMSA.dta")) 
+
+filepath2 = joinpath(@__DIR__, "DataMSA.jld2")
+
+data = DataFrame(load(filepath2))
 
 #Changing variable names to facilitate column splitting
 rename!(data, "pop2005" => "pop_2005", "pop2006" => "pop_2006", "pop2007" => "pop_2007", "pop2008" => "pop_2008")
@@ -159,3 +164,22 @@ data = hcat(data1, data2, data3, makeunique=true)
 data = select(data, :fips, :msaname, :statename, Cols(r"logeff_.*"), Cols(r"logexcfrict_.*"), Cols(r"pop.*"))
 
 dropmissing!(data, Cols(r"pop.*"))
+
+#CALCULATING AVG POP EFF EXCFRICT 
+
+data = select!(data, Cols(r"pop_*"), Cols(r"logeff_*"), Cols(r"logexcfrict_*"))
+
+data.avg_pop = mean.(eachrow(data[:, [:pop_2005, :pop_2006, :pop_2007, :pop_2008]]))
+
+data.avg_logeff = mean.(eachrow(data[:, [:logeff_2005, :logeff_2006, :logeff_2007, :logeff_2008]]))
+
+data.avg_logexcfrict = mean.(eachrow(data[:, [:logexcfrict_2005, :logexcfrict_2006, :logexcfrict_2007, :logexcfrict_2008]]))
+
+data = select!(data, [:avg_pop, :avg_logeff, :avg_logexcfrict])
+
+data.zero = zeros(Float32, 193)
+
+dict = Dict(:avg_pop => data[!, :avg_pop], :avg_logeff => data[!, :avg_logeff], :avg_logexcfrict => data[!, :avg_logexcfrict],
+:zero => data[!, :zero])
+
+save("USBenchmark.jld2", dict)
