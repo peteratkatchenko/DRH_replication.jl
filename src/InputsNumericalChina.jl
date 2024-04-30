@@ -91,3 +91,9 @@ filter!(row -> ismissing(row.cityid), data)
 data.year = fill(2005, nrow(data))
 
 data = select(data, [:province, :city, :year, :logeff, :logexcfrict, :pop])
+
+#DATA SET FOR MAIN MODULE
+
+dict = Dict(:pop => data[!, :pop], :logexcfrict => data[!, :logexcfrict], :logeff => data[!, :logeff])
+
+save("ChinaBenchmark.jld2", dict)
