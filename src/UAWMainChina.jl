@@ -5,7 +5,7 @@ using Plots
 using Roots
 
 #Select Country 
-China = 0 #Make 0 if US and 1 if China
+China = 1 #Make 0 if US and 1 if China
 
 if China == 0
     
@@ -40,7 +40,6 @@ else
     ksi = .00
     ubar = 10
     kappa = 0.001
-    #ChinaBenchmark = DataFrame(load(joinpath(@__DIR__, "ChinaBenchmark.jld2")))
     ChinaBenchmark = CSV.read("C:\\Users\\peter\\.julia\\dev\\dev_econ_replication\\replication_files\\urban_accounting_welfare_replication\\ReplicationFiles\\MatlabPro\\ChinaBenchmark.txt",
     header=false, DataFrame) 
     shocks = ChinaBenchmark
@@ -81,7 +80,6 @@ end
 
 NbarNew = sum(N)
 
-#Counterfactuals without Differences in One City Characteristic, κ = $(kappa), ω = $(eps), ζ = $(ksi)
 
 # Counterfactual efficiency
 count = 0
@@ -310,6 +308,7 @@ for i = 1:length(N)
     lprob[i] = log((length(N) - i + 1)/length(N))
 end
 
+#Counterfactuals without Differences in One City Characteristic, κ = $(kappa), ω = $(eps), ζ = $(ksi)
 
 ubarTFP = trunc(ubarTFP, digits=4)
 TMTFP = trunc(TMTFP, digits=4)
@@ -366,8 +365,6 @@ else
 end    
     
 
-#Counterfactuals with Differences in Only One City Characteristic, κ = $(kappa), ω = $(eps), ζ = $(ksi)
-#=
 #Only US
 if China == 0
  
@@ -430,6 +427,8 @@ if China == 0
     println("ubarTFPO = $ubarTFPO")
 
     TMTFPO = sum(max.((NTFPO .- N), 0))/Nbar
+
+    #Counterfactuals with Differences in Only One City Characteristic, κ = $(kappa), ω = $(eps), ζ = $(ksi)
 
     ubarTFPO = trunc(ubarTFPO, digits=4)
     TMTFPO = trunc(TMTFPO, digits=4)
@@ -658,5 +657,5 @@ if China == 0
     color=:blue, linewidth=2,
     xlabelfontsize=8, ylabelfontsize=8)
     plot!(f3, SNNS, lprob, label="No Shocks", legend=:bottomleft, color=:black, linewidth=2)
-    save("figure_3.png", f3)=#
+    save("figure_3.png", f3)
 end 

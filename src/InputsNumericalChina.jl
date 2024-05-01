@@ -71,7 +71,7 @@ model = fit(EconometricModel, @formula(loglaborpop ~ PLACEHOLDER), data)
 
 alpha5 = coef(model)[1] 
 
-kappa = exp(coeffg - ln(2/3)+0.5*ln(3.1415))
+kappa = exp(alpha5 - ln(2/3)+0.5*ln(3.1415))
 
 println(kappa)
 
