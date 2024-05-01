@@ -179,7 +179,10 @@ data = select!(data, [:avg_pop, :avg_logeff, :avg_logexcfrict])
 
 data.zero = zeros(Float32, 193)
 
-dict = Dict(:avg_pop => data[!, :avg_pop], :avg_logeff => data[!, :avg_logeff], :avg_logexcfrict => data[!, :avg_logexcfrict],
-:zero => data[!, :zero])
+data.number = fill(20052008, 193)
 
-save("USBenchmark.jld2", dict)
+data = select!(data, [:number, :avg_logeff, :zero, :avg_logexcfrict, :avg_pop])
+
+filepath3 = joinpath(@__DIR__, "USBenchmark.txt")
+
+CSV.write(filepath3, data)

@@ -16,14 +16,12 @@ if China == 0
     beta = 0.98
     delta = 0.02
     inter = 0.02
-    eps = .00 #(called omega in main text)
+    eps = .02 #(called omega in main text)
     ksi = .00
     ubar = 10
     kappa = 0.002
-    #USBenchmark = DataFrame(load(joinpath(@__DIR__, "USBenchmark.jld2")))
-    USBenchmark = CSV.read("C:\\Users\\peter\\.julia\\dev\\dev_econ_replication\\replication_files\\urban_accounting_welfare_replication\\ReplicationFiles\\AERDataFiles\\USBenchmark.txt",
-    header=false, DataFrame)
-    USBenchmark.Column3 = convert.(Float64, USBenchmark.Column3)
+    filepath4 = joinpath(@__DIR__, "USBenchmark.txt")
+    USBenchmark = CSV.read(filepath4, DataFrame)
     shocks = USBenchmark
 
     dictmain = Dict(:psi => psi, :theta => theta, :totalhours => totalhours, :beta => beta,
@@ -69,8 +67,8 @@ Nlar = maximum(1000 .*shocks[:,5])
 
 N = 1000 .*shocks[:,5]
 
-c1 = zeros(Float64, 192)
-c2 = zeros(Float64, 192)
+c1 = zeros(Float64, 193)
+c2 = zeros(Float64, 193)
 
 for i in 1:length(shocks[:,1])
 
@@ -93,7 +91,7 @@ NbarNewTFP = 0
 
 ubarTFP = ubar
 
-NTFP = zeros(Float64, 192)
+NTFP = zeros(Float64, 193)
 
 RTFP = 0
 
@@ -164,7 +162,7 @@ ubarA = ubar
 
 AA = 0
 
-NA = zeros(Float64, 192)
+NA = zeros(Float64, 193)
 
 X0 = 0
 
@@ -233,7 +231,7 @@ NbarNewEF = 0
 
 ubarEF = ubar
 
-NEF = zeros(Float64, 192)
+NEF = zeros(Float64, 193)
 
 AEF = 0
 
@@ -311,36 +309,49 @@ for i = 1:length(N)
     lprob[i] = log((length(N) - i + 1)/length(N))
 end
 
-f1p1 = plot(SNR, lprob, color=:red, linewidth=2, label="Actual", legend=:bottomleft, title="Model Utility = $(ubar)",
-titlefontsize=8, xlabel="ln(population)", ylabel="ln(prob > population)")
-plot!(f1p1, SN, lprob, color=:blue, linewidth=2, label="Modeled", legend=:bottomleft)
+#Counterfactuals without Differences in One City Characteristic, κ = $(kappa), ω = $(eps), ζ = $(ksi)
+
+ubarTFP = trunc(ubarTFP, digits=4)
+TMTFP = trunc(TMTFP, digits=4)
+ubarA = trunc(ubarA, digits=4)
+TMA = trunc(TMA, digits=4)
+ubarEF = trunc(ubarEF, digits=4)
+TMEF = trunc(TMEF, digits=4)
+
+f1p1 = plot(SNR, lprob, color=:blue, linewidth=2, label="Actual", legend=:bottomleft, title="Model Utility = $(ubar)",
+titlefontsize=8, xlabel="ln(population)", ylabel="ln(prob > population)", titlelocation=:left,
+xlabelfontsize=8, ylabelfontsize=8, xlims=(11, 17))
+plot!(f1p1, SN, lprob, label="Modeled", color=:red, legend=:bottomleft, xlims=(11, 17), 
+linewidth=2)
 
 f1p2 = plot(SN, lprob, label="Actual", legend=:bottomleft, 
-title="Counterfactual Utility = $(ubarTFP), Reallocation = $(TMTFP)", titlefontsize=8,
+title="Counterfactual Utility = $(ubarTFP), \n reallocation = $(TMTFP)", titlefontsize=8, titlelocation=:left,
 xlabel="ln(population)",
 ylabel="ln(prob > population)",
-color=:blue, linewidth=2)
-plot!(f1p2, SNTFP, lprob, label="Avg. Efficiency", legend=:bottomleft, color=:green, linewidth=2)
+color=:blue, linewidth=2,
+xlabelfontsize=8, ylabelfontsize=8, xlims=(11, 18))
+plot!(f1p2, SNTFP, lprob, label="Avg. Efficiency", legend=:bottomleft, color=:green, linewidth=2, xlims=(11, 18))
 
 f1p3 = plot(SN, lprob, label="Actual", legend=:bottomleft,
-title="Counterfactual Utility = $(ubarA), Reallocation = $(TMA)", titlefontsize=8,
+title="Counterfactual Utility = $(ubarA), \n reallocation = $(TMA)", titlefontsize=8, titlelocation=:left,
 xlabel="ln(population)", ylabel="ln(prob > population)",
-color=:blue, linewidth=2)
-plot!(f1p3, SNA, lprob, label="Avg. Amenities", legend=:bottomleft, color=:magenta, linewidth=2)
+color=:blue, linewidth=2,
+xlabelfontsize=8, ylabelfontsize=8, xlims=(11, 18))
+plot!(f1p3, SNA, lprob, label="Avg. Amenities", legend=:bottomleft, color=:magenta, linewidth=2, xlims=(11, 18))
 
-f1p4 = plot(SN,lprob, 
+f1p4 = plot(SN, lprob, 
 label="Actual", legend=:bottomleft,
 xlabel="ln(population)",
 ylabel="ln(prob > population)",
-title="Counterfactual Utility = ',num2str(ubarEF), Reallocation = $(TMEF)", titlefontsize=8,
-annotation=(15.5, 1, "Counterfactuals Without One Shock, κ = $(kappa), ω = $(eps), ζ = $(ksi)", :left),
-color=:blue, linewidth=2)
-plot(f1p4, SNEF, lprob, label="Exc. Frictions", legend=:bottomleft, color=:black, linewidth=2)
-
+title="Counterfactual Utility = $ubarEF, \n reallocation = $(TMEF)", titlefontsize=8, titlelocation=:left,
+color=:blue, linewidth=2,
+xlabelfontsize=8, ylabelfontsize=8, xlims=(11, 17))
+plot!(f1p4, SNEF, lprob, label="Avg. Exc. Frictions", legend=:bottomleft, color=:black, linewidth=2, xlims=(11, 17))
 
 f1 = plot(f1p1, f1p2, f1p3, f1p4, layout=(2,2))
-display(f1)
+save("figure_5.png", f1)
 
+#=
 chA = ((NA .- N)./N)
 chTFP = ((NTFP .- N)./N)
 chEF = ((NEF .- N)./N)
@@ -368,9 +379,11 @@ if China == 0
 
     ubarTFPO = ubar
 
-    NTFPO = zeros(Float64, 192)
+    NTFPO = zeros(Float64, 193)
 
     X0 = 0
+
+    ATFP = 0
 
     while abs(Nbar-NbarNewTFPO) > 0.02
 
@@ -382,7 +395,7 @@ if China == 0
                 global X0 = max(NTFPO[i], 1)
             end
         
-            ATFP = exp(shocks[i,2])/((shocks[i,5]*1000)^eps)
+            global ATFP = exp(shocks[i,2])/((shocks[i,5]*1000)^eps)
 
             e1 = ubarTFPO + (1 + psi)*log((1 + psi))-psi*log(psi)-AA*(X0^ksi)
 
@@ -417,22 +430,28 @@ if China == 0
 
     TMTFPO = sum(max.((NTFPO .- N), 0))/Nbar
 
+    #Counterfactuals with Differences in Only One City Characteristic, κ = $(kappa), ω = $(eps), ζ = $(ksi)
+
+    ubarTFPO = trunc(ubarTFPO, digits=4)
+    TMTFPO = trunc(TMTFPO, digits=4)
+
     f2p1 = plot(SNR, lprob, label="Actual", legend=:bottomleft,
     xlabel="ln(population)", ylabel="ln(prob > population)",
-    title="Model Utility = $(ubar)", titlefontsize=8,
-    annotation=(15.5, 1, "Counterfactuals with Only One Shock, κ = $(kappa), ω = $(eps), ζ = $(ksi)"),
-    color=:red, linewidth=2)
+    title="Model Utility = $(ubar)", titlefontsize=8, titlelocation=:left, 
+    color=:red, linewidth=2,
+    xlabelfontsize=8, ylabelfontsize=8, xlims=(11, 18))
     plot!(f2p1, SN, lprob, label="Modeled", legend=:bottomleft, color=:blue, linewidth=2)
 
     SNTFPO = sort(log.(NTFPO))
 
     f2p2 = plot(SN, lprob,
-    xlabel="ln(population)", ylabel="ln(prob > population)",
+    xlabel="ln(population)", ylabel="ln(prob > population)", xlims=(11, 18),
     label="Actual",
     legend=:bottomleft,
-    title="Counterfactual Utility = $(ubarTFPO), Reallocation = $(TMTFPO)", titlefontsize=8,
-    color=:blue, linewidth=2)
-    plot(f2p2, SNTFPO, lprob, label="Efficiency Only", legend=:bottomleft, color=:green, linewidth=2)
+    title="Counterfactual Utility = $(ubarTFPO), \n  Reallocation = $(TMTFPO)", titlefontsize=8, titlelocation=:left,
+    color=:blue, linewidth=2,
+    xlabelfontsize=8, ylabelfontsize=8)
+    plot!(f2p2, SNTFPO, lprob, label="Efficiency Only", legend=:bottomleft, color=:green, linewidth=2)
 
     # Counterfactual Amenities Only
     count = 0
@@ -443,7 +462,7 @@ if China == 0
 
     ubarAO = ubar
 
-    NAO = zeros(Float64, 192)
+    NAO = zeros(Float64, 193)
 
     X0 = 0
 
@@ -492,12 +511,16 @@ if China == 0
 
     SNAO = sort(log.(NAO))
 
+    ubarAO = trunc(ubarAO, digits=4)
+    TMAO = trunc(TMAO, digits=4)
+
     f2p3 = plot(SN, lprob, 
-    xlabel="ln(population)", ylabel="ln(prob > population)",
+    xlabel="ln(population)", ylabel="ln(prob > population)", xlims=(11, 18),
     legend=:bottomleft,
     label="Actual",
-    title="Counterfactual Utility = $(ubarAO), Reallocation = $(TMAO)", titlefontisze=8,
-    color=:blue, linewidth=2)
+    title="Counterfactual Utility = $(ubarAO), \n Reallocation = $(TMAO)", titlefontsize=8, titlelocation=:left,
+    color=:blue, linewidth=2,
+    xlabelfontsize=8, ylabelfontsize=8)
     plot!(f2p3, SNAO, lprob, label="Amenities Only", legend=:bottomleft, color=:magenta, linewidth=2)
 
     # Counterfactual Excessive Frictions Only
@@ -509,7 +532,7 @@ if China == 0
 
     ubarEFO = ubar
 
-    NEFO = zeros(Float64, 192)
+    NEFO = zeros(Float64, 193)
 
     X0 = 0
 
@@ -558,14 +581,18 @@ if China == 0
 
     SNEFO = sort(log.(NEFO))
 
+    ubarEFO = trunc(ubarEFO, digits=4)
+    TMEFO = trunc(TMEFO, digits=4)
+
     f2p4 = plot(SN, lprob, 
     label="Actual", xlabel="ln(population)", ylabel="ln(prob > population)", legend=:bottomleft,
-    title="'Counterfactual Utility = $(ubarEFO), Reallocation = $(TMEFO)", titlefontsize=8,
-    color=:blue, linewidth=2)
+    title="Counterfactual Utility = $(ubarEFO), \n Reallocation = $(TMEFO)", titlefontsize=8, titlelocation=:left,
+    color=:blue, linewidth=2,
+    xlabelfontsize=8, ylabelfontsize=8)
     plot!(f2p4, SNEFO, lprob, label="Exc. Frictions Only", legend=:bottomleft, color=:black, linewidth=2)
 
     f2 = plot(f2p1, f2p2, f2p3, f2p4, layout=(2,2))
-    display(f2)
+    save("figure_2.png", f2)
 
     # Counterfactual Without Shocks
     count = 0
@@ -623,10 +650,14 @@ if China == 0
 
     SNNS = sort(log.(NNS))
 
+    ubarNS = trunc(ubarNS, digits=4)
+
     f3 = plot(SN, lprob, 
     label="Actual", legend=:bottomleft,
-    title="Counterfactual Utility = $(ubarNS)", titlefontsize=8,
+    title="Counterfactual Utility = $(ubarNS)", titlefontsize=8, xlims=(11, 18), titlelocation=:left,
     xlabel="ln(population)", ylabel="ln(prob > population)",
-    color=:blue, linewidth=2)
-    plot(f3, SNNS, lprob, label="No Shocks", legend=:bottomleft, color=:black, linewidth=2)
-    display(f3)
+    color=:blue, linewidth=2,
+    xlabelfontsize=8, ylabelfontsize=8)
+    plot!(f3, SNNS, lprob, label="No Shocks", legend=:bottomleft, color=:black, linewidth=2)
+    save("figure_3.png", f3)=#
+end 
