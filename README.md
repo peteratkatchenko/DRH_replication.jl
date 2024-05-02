@@ -44,23 +44,23 @@ Following execution of the 'glc_replicate()' function in the Julia REPL, the fil
 
 **Figure 2**：
 ![Replication of the result](assets/img/figure_2.png "Replication")
-![Result from the publication](assets/img/figure_2_pub.png "Publication")
+![Result from the publication](assets/img/figure_2_pub.PNG "Publication")
 
 **Figure 3**: 
 ![Replication of the result](assets/img/figure_3.png "Replication")
-![Result from the publication](assets/img/figure_3_pub.png "Publication")
+![Result from the publication](assets/img/figure_3_pub.PNG "Publication")
 
 **Figure 4**：
 ![Replication of the result](assets/img/figure_4.png "Replication")
-![Result from the publication](assets/img/figure_4_pub.png "Publication")
+![Result from the publication](assets/img/figure_4_pub.PNG "Publication")
 
 **Figure 8**：
 ![Replication of the result](assets/img/figure_8.png "Replication")
-![Result from the publication](assets/img/figure_8_pub.png "Publication")
+![Result from the publication](assets/img/figure_8_pub.PNG "Publication")
 
 **Figure 9**：
 ![Replication of the result](assets/img/figure_9.png "Replication")
-![Result from the publication](assets/img/figure_9_pub.png "Publication")
+![Result from the publication](assets/img/figure_9_pub.PNG "Publication")
 
 
 ## Want to Execute the Code Manually?
