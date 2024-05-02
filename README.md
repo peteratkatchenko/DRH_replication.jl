@@ -41,7 +41,8 @@ Following execution of the 'glc_replicate()' function in the Julia REPL, the fil
 
 
 ## Figures Produced by the Replication
-Figures produced by the replication appear first, followed by the corresponding figure from the replication.
+
+Figures produced by the replication appear first, followed by the corresponding figure from the publication.
 
 **Figure 2**：
 
