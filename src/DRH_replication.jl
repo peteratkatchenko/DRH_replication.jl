@@ -2,13 +2,16 @@ module DRH_replication
 
 export drh_replicate
 
-using CSV 
-using DataFrames
-using NLsolve 
-using Plots
 using StatFiles
-using Econometrics 
-
+using DataFrames
+using Econometrics
+using CSV
+using JLD2
+using Statistics
+using GLM
+using NLsolve
+using Plots
+using Roots
 
 function drh_replicate()
 
