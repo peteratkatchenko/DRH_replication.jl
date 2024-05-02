@@ -42,24 +42,39 @@ Following execution of the 'glc_replicate()' function in the Julia REPL, the fil
 
 ## Figures Produced by the Replication
 
-**Figure 2**：\\
+**Figure 2**：
+Replication:
 ![Replication of the result](assets/img/figure_2.png "Replication")
+
+Publication:
 ![Result from the publication](assets/img/figure_2_pub.PNG "Publication")
 
-**Figure 3**: \\
+**Figure 3**: 
+Replication:
 ![Replication of the result](assets/img/figure_3.png "Replication")
+
+Publication:
 ![Result from the publication](assets/img/figure_3_pub.PNG "Publication")
 
-**Figure 4**：\\
+**Figure 4**：
+Replication:
 ![Replication of the result](assets/img/figure_4.png "Replication")
+
+Publication:
 ![Result from the publication](assets/img/figure_4_pub.PNG "Publication")
 
-**Figure 8**：\\
+**Figure 8**：
+Replication:
 ![Replication of the result](assets/img/figure_8.png "Replication")
+
+Publication:
 ![Result from the publication](assets/img/figure_8_pub.PNG "Publication")
 
-**Figure 9**：\\
+**Figure 9**：
+Replication:
 ![Replication of the result](assets/img/figure_9.png "Replication")
+
+Publication:
 ![Result from the publication](assets/img/figure_9_pub.PNG "Publication")
 
 
