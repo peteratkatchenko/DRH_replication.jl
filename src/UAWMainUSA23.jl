@@ -349,7 +349,7 @@ xlabelfontsize=8, ylabelfontsize=8, xlims=(11, 17))
 plot!(f1p4, SNEF, lprob, label="Avg. Exc. Frictions", legend=:bottomleft, color=:black, linewidth=2, xlims=(11, 17))
 
 f1 = plot(f1p1, f1p2, f1p3, f1p4, layout=(2,2))
-save("figure_1.png", f1)
+savefig(f1, "figure_1.png")
 
 chA = ((NA .- N)./N)
 chTFP = ((NTFP .- N)./N)
@@ -367,7 +367,7 @@ end
     
 
 #Counterfactuals with Differences in Only One City Characteristic, κ = $(kappa), ω = $(eps), ζ = $(ksi)
-#=
+
 #Only US
 if China == 0
  
@@ -591,7 +591,7 @@ if China == 0
     plot!(f2p4, SNEFO, lprob, label="Exc. Frictions Only", legend=:bottomleft, color=:black, linewidth=2)
 
     f2 = plot(f2p1, f2p2, f2p3, f2p4, layout=(2,2))
-    save("figure_2.png", f2)
+    savefig(f2, "figure_2.png")
 
     # Counterfactual Without Shocks
     count = 0
@@ -658,5 +658,5 @@ if China == 0
     color=:blue, linewidth=2,
     xlabelfontsize=8, ylabelfontsize=8)
     plot!(f3, SNNS, lprob, label="No Shocks", legend=:bottomleft, color=:black, linewidth=2)
-    save("figure_3.png", f3)=#
+    savefig(f3, "figure_3.png")
 end 

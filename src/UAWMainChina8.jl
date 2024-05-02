@@ -3,6 +3,7 @@ using DataFrames
 using NLsolve 
 using Plots
 using Roots
+using Statistics
 
 #Select Country 
 China = 1 #Make 0 if US and 1 if China
@@ -40,8 +41,8 @@ else
     ksi = .00
     ubar = 10
     kappa = 0.001
-    ChinaBenchmark = CSV.read("C:\\Users\\peter\\.julia\\dev\\dev_econ_replication\\replication_files\\urban_accounting_welfare_replication\\ReplicationFiles\\MatlabPro\\ChinaBenchmark.txt",
-    header=false, DataFrame) 
+    filepath45 = joinpath(@__DIR__, "ChinaBenchmark.txt")
+    ChinaBenchmark = CSV.read(filepath45, DataFrame) 
     shocks = ChinaBenchmark
 
     dictmain = Dict(:psi => psi, :theta => theta, :totalhours => totalhours, :beta => beta,
@@ -66,8 +67,8 @@ Nlar = maximum(1000 .*shocks[:,5])
 
 N = 1000 .*shocks[:,5]
 
-c1 = zeros(Float64, 193)
-c2 = zeros(Float64, 193)
+c1 = zeros(Float64, 212)
+c2 = zeros(Float64, 212)
 
 for i in 1:length(shocks[:,1])
 
@@ -90,7 +91,7 @@ NbarNewTFP = 0
 
 ubarTFP = ubar
 
-NTFP = zeros(Float64, 193)
+NTFP = zeros(Float64, 212)
 
 RTFP = 0
 
@@ -161,7 +162,7 @@ ubarA = ubar
 
 AA = 0
 
-NA = zeros(Float64, 193)
+NA = zeros(Float64, 212)
 
 X0 = 0
 
@@ -230,7 +231,7 @@ NbarNewEF = 0
 
 ubarEF = ubar
 
-NEF = zeros(Float64, 193)
+NEF = zeros(Float64, 212)
 
 AEF = 0
 
@@ -348,7 +349,7 @@ xlabelfontsize=8, ylabelfontsize=8, xlims=(11, 17))
 plot!(f1p4, SNEF, lprob, label="Avg. Exc. Frictions", legend=:bottomleft, color=:black, linewidth=2, xlims=(11, 17))
 
 f1 = plot(f1p1, f1p2, f1p3, f1p4, layout=(2,2))
-save("figure_1.png", f1)
+savefig(f1, "figure_8.png")
 
 chA = ((NA .- N)./N)
 chTFP = ((NTFP .- N)./N)
@@ -360,8 +361,8 @@ if China == 0
     CSV.write("PercChangeUS.csv", PercChange)
     CSV.write("ShocksModelUS.csv", ShocksModel)
 else
-    save("PercChangeChina.csv", PercChange)
-    save("ShocksModelChina.csv", ShocksModel)
+    CSV.write("PercChangeChina.csv", PercChange)
+    CSV.write("ShocksModelChina.csv", ShocksModel)
 end    
     
 
@@ -377,7 +378,7 @@ if China == 0
 
     ubarTFPO = ubar
 
-    NTFPO = zeros(Float64, 193)
+    NTFPO = zeros(Float64, 212)
 
     X0 = 0
 
@@ -460,7 +461,7 @@ if China == 0
 
     ubarAO = ubar
 
-    NAO = zeros(Float64, 193)
+    NAO = zeros(Float64, 212)
 
     X0 = 0
 
@@ -530,7 +531,7 @@ if China == 0
 
     ubarEFO = ubar
 
-    NEFO = zeros(Float64, 193)
+    NEFO = zeros(Float64, 212)
 
     X0 = 0
 
@@ -590,7 +591,7 @@ if China == 0
     plot!(f2p4, SNEFO, lprob, label="Exc. Frictions Only", legend=:bottomleft, color=:black, linewidth=2)
 
     f2 = plot(f2p1, f2p2, f2p3, f2p4, layout=(2,2))
-    save("figure_2.png", f2)
+    savefig(f2, "figure_2.png")
 
     # Counterfactual Without Shocks
     count = 0
@@ -601,7 +602,7 @@ if China == 0
 
     ubarNS = ubar
 
-    NNS = zeros(Float64, 193)
+    NNS = zeros(Float64, 212)
 
     X0 = 0
 
@@ -657,5 +658,5 @@ if China == 0
     color=:blue, linewidth=2,
     xlabelfontsize=8, ylabelfontsize=8)
     plot!(f3, SNNS, lprob, label="No Shocks", legend=:bottomleft, color=:black, linewidth=2)
-    save("figure_3.png", f3)
+    savefig(f3, "figure_3.png")
 end 
