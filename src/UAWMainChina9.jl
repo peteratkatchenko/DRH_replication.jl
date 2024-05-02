@@ -201,7 +201,7 @@ while abs(Nbar-NbarNewEF) > 0.02
         
         global ATFP = exp(shocks[i,2])/((shocks[i,5]*1000)^eps)
 
-        d1 = ubarEF + (1 + psi)*log((1 + psi))-psi*log(psi)-((exp(shocks[i,3])/(shocks[i,5]*1000)^ksi)*(X0^ksi))
+        d1 = ubarEF3 + (1 + psi)*log((1 + psi))-psi*log(psi)-((exp(shocks[i,3])/(shocks[i,5]*1000)^ksi)*(X0^ksi))
 
         d2 = (1-theta)*(((ATFP*(X0^eps))^(1/(1-theta)))/((theta/inter)^(theta/(1-theta))))
     
@@ -221,16 +221,16 @@ while abs(Nbar-NbarNewEF) > 0.02
     end
     
     if Nbar-NbarNewEF > 0.02
-        global ubarEF = ubarEF - step
+        global ubarEF3 = ubarEF3 - step
     else
-        global ubarEF = ubarEF + step
+        global ubarEF3 = ubarEF3 + step
     end
     println(Nbar-NbarNewEF)
 end
 
 println("NbarNewEF = $NbarNewEF") 
 println("Maximum NEF = $(maximum(NEF))") 
-println("ubar EF = $ubarEF")
+println("ubar EF = $ubarEF3")
 
 
 TMEF = sum(max.((NEF .- N), 0))/Nbar
@@ -282,7 +282,7 @@ while abs(Nbar-NbarNewEF) > 0.02
         
         global ATFP = exp(shocks[i,2])/((shocks[i,5]*1000)^eps)
 
-        d1 = ubarEF + (1 + psi)*log((1 + psi))-psi*log(psi)-((exp(shocks[i,3])/(shocks[i,5]*1000)^ksi)*(X0^ksi))
+        d1 = ubarEF2 + (1 + psi)*log((1 + psi))-psi*log(psi)-((exp(shocks[i,3])/(shocks[i,5]*1000)^ksi)*(X0^ksi))
 
         d2 = (1-theta)*(((ATFP*(X0^eps))^(1/(1-theta)))/((theta/inter)^(theta/(1-theta))))
     
@@ -302,16 +302,16 @@ while abs(Nbar-NbarNewEF) > 0.02
     end
     
     if Nbar-NbarNewEF > 0.02
-        global ubarEF = ubarEF - step
+        global ubarEF2 = ubarEF2 - step
     else
-        global ubarEF = ubarEF + step
+        global ubarEF2 = ubarEF2 + step
     end
     println(Nbar-NbarNewEF)
 end
 
 println("NbarNewEF = $NbarNewEF") 
 println("Maximum NEF = $(maximum(NEF))") 
-println("ubar EF = $ubarEF")
+println("ubar EF = $ubarEF2")
 
 
 TMEF = sum(max.((NEF .- N), 0))/Nbar

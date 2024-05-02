@@ -297,7 +297,7 @@ TMA = sum(max.((NA .- N), 0))/Nbar
 TMTFP = sum(max.((NTFP .- N), 0))/Nbar
 TMEF = sum(max.((NEF .- N), 0))/Nbar
 
-SNR = sort(log.(1000 .*shocks[:,1]))
+SNR = sort(log.(1000 .*shocks[:,1]) .* 0)
 SN = sort(log.(N))
 SNTFP = sort(log.(NTFP))
 SNA = sort(log.(NA))

@@ -203,7 +203,7 @@ while abs(Nbar-NbarNewEF) > 0.02
         
         global ATFP = exp(shocks[i,2])/((shocks[i,5]*1000)^eps)
 
-        d1 = ubarEF + (1 + psi)*log((1 + psi))-psi*log(psi)-((exp(shocks[i,3])/(shocks[i,5]*1000)^ksi)*(X0^ksi))
+        d1 = ubarEF2 + (1 + psi)*log((1 + psi))-psi*log(psi)-((exp(shocks[i,3])/(shocks[i,5]*1000)^ksi)*(X0^ksi))
 
         d2 = (1-theta)*(((ATFP*(X0^eps))^(1/(1-theta)))/((theta/inter)^(theta/(1-theta))))
     
@@ -223,16 +223,16 @@ while abs(Nbar-NbarNewEF) > 0.02
     end
     
     if Nbar-NbarNewEF > 0.02
-        global ubarEF = ubarEF - step
+        global ubarEF2 = ubarEF2 - step
     else
-        global ubarEF = ubarEF + step
+        global ubarEF2 = ubarEF2 + step
     end
     println(Nbar-NbarNewEF)
 end
 
 println("NbarNewEF = $NbarNewEF") 
 println("Maximum NEF = $(maximum(NEF))") 
-println("ubar EF = $ubarEF")
+println("ubar EF = $ubarEF2")
 
 SNEF2 = sort(log.(NEF))
 
@@ -282,7 +282,7 @@ while abs(Nbar-NbarNewEF) > 0.02
         
         global ATFP = exp(shocks[i,2])/((shocks[i,5]*1000)^eps)
 
-        d1 = ubarEF + (1 + psi)*log((1 + psi))-psi*log(psi)-((exp(shocks[i,3])/(shocks[i,5]*1000)^ksi)*(X0^ksi))
+        d1 = ubarEF3 + (1 + psi)*log((1 + psi))-psi*log(psi)-((exp(shocks[i,3])/(shocks[i,5]*1000)^ksi)*(X0^ksi))
 
         d2 = (1-theta)*(((ATFP*(X0^eps))^(1/(1-theta)))/((theta/inter)^(theta/(1-theta))))
     
@@ -302,16 +302,16 @@ while abs(Nbar-NbarNewEF) > 0.02
     end
     
     if Nbar-NbarNewEF > 0.02
-        global ubarEF = ubarEF - step
+        global ubarEF3 = ubarEF3 - step
     else
-        global ubarEF = ubarEF + step
+        global ubarEF3 = ubarEF3 + step
     end
     println(Nbar-NbarNewEF)
 end
 
 println("NbarNewEF = $NbarNewEF") 
 println("Maximum NEF = $(maximum(NEF))") 
-println("ubar EF = $ubarEF")
+println("ubar EF = $ubarEF3")
 
 SNEF3 = sort(log.(NEF))
 
@@ -323,8 +323,8 @@ end
 
 
 ubarEF = trunc(ubarEF, digits=4)
-ubarEF2 = trunc(ubarEF, digits=4)
-ubarEF3 = trunc(ubarEF, digits=4)
+ubarEF2 = trunc(ubarEF2, digits=4)
+ubarEF3 = trunc(ubarEF3, digits=4)
 
 f1 = plot(SNEF, lprob, xlabel="ln(population)", ylabel="ln(prob > population)", color=:black, linewidth=2,
 xlabelfontsize=8, ylabelfontsize=8, xlims=(11, 15), label="All excessive frictions at 50th percentile, utility = $(ubarEF)", legend=:bottomleft)
