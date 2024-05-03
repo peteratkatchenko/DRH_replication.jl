@@ -329,6 +329,6 @@ ubarEF3 = trunc(ubarEF3, digits=4)
 f1 = plot(SNEF, lprob, xlabel="ln(population)", ylabel="ln(prob > population)", color=:black, linewidth=2,
 xlabelfontsize=8, ylabelfontsize=8, xlims=(11, 15), label="All excessive frictions at 50th percentile, utility = $(ubarEF)", legend=:bottomleft)
 plot!(f1, SNEF2, lprob, label="All excessive frictions at 90th percentile, utility = $(ubarEF2)", legend=:bottomleft, color=:red, linewidth=2, xlims=(11, 15))
-plot!(f1, SNEF3, lprob, label="All excessive frictions at 90th percentile, utility = $(ubarEF3)", legend=:bottomleft, color=:blue, linewidth=2, xlims=(11, 15))
+plot!(f1, SNEF3, lprob, label="All excessive frictions at 10th percentile, utility = $(ubarEF3)", legend=:bottomleft, color=:blue, linewidth=2, xlims=(11, 15))
 
 savefig(f1, "figure_4.png")
